@@ -181,7 +181,7 @@ if uploaded_file:
             y=heatmap.index,
             colorscale='ice'))
 
-        fig.update_layout(xaxis_nticks=len(heatmap.columns)+1)     # to display all the ticks
+        fig.update_layout(xaxis_nticks=24)     # to display all the ticks
         st.plotly_chart(fig)
 
 
