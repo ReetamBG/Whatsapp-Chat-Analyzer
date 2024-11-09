@@ -1,0 +1,6 @@
+matplotlib
+urlextract
+pandas
+streamlit
+wordcloud
+plotly
