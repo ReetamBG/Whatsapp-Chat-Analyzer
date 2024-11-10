@@ -181,34 +181,8 @@ if uploaded_file:
             y=heatmap.index,
             colorscale='ice'))
 
-        fig.update_layout(xaxis_nticks=len(heatmap.columns)+1)     # to display all the ticks
+        fig.update_layout(xaxis_nticks=gi)     # to display all the ticks
         st.plotly_chart(fig)
-
-
-        # TESTING
-        st.subheader('{{ TESTING DONT TWEAK NOW !!! }}')
-        col1, col2 = st.columns(2)
-        day_df, month_df = helper.get_activity_map(df, selected_user)
-
-        with col1:
-            # activity map for months
-            fig = px.bar_polar(month_df, r="message",
-                               theta="month",
-                               title='Most Active Months')
-
-            st.plotly_chart(fig, key="Most Active Months 2", on_select="rerun")
-
-        with col2:
-            # Activity map for days
-            fig = px.bar_polar(day_df, r="message",
-                               theta="day_name",
-                               title='Most Active Days')
-
-            st.plotly_chart(fig, key="Most Active Days 2", on_select="rerun")
-
-
-
-
 
         # -- Wordcloud and Most Frequently Used Words --
         st.divider()
