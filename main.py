@@ -15,7 +15,7 @@ st.set_page_config(page_title="Ree Whatsapp Chat Analyzer",
 
 st.sidebar.title('Whatsapp Chat Analyzer')
 
-uploaded_file = st.sidebar.file_uploader(label="Upload the Exported Chat",
+uploaded_file = st.sidebar.file_uploader(label="Upload the Exported Whatsapp Chat",
                                          type='txt',
                                          help='Upload the Exported Chat. The chat should be exported without media. The file should be of the form chat.txt')
 
@@ -179,9 +179,22 @@ if uploaded_file:
             z=heatmap,
             x=heatmap.columns,
             y=heatmap.index,
-            colorscale='ice'))
+            colorscale='ice',
+        ))
 
-        fig.update_layout(xaxis_nticks=gi)     # to display all the ticks
+        # Update layout to force categorical ordering and prevent any date interpretation of the hours
+        # Without this plotly is interpreting '0-1', '1-2' these as datetime for some reason not as string even after explicitly setting it to string
+        fig.update_layout(
+            title='Higher Scale = More Activity',
+            xaxis=dict(
+                type='category',                   # Force x-axis as categorical
+                categoryorder='array',              # Order by the given list
+                categoryarray=[str(col) for col in heatmap.columns],
+                title="Hour Period",
+                tickangle=-45
+            )
+        )
+
         st.plotly_chart(fig)
 
         # -- Wordcloud and Most Frequently Used Words --

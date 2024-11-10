@@ -153,8 +153,31 @@ def get_activity_map(df, selected_user):
 
 
 # heatmap
+# def get_activity_heatmap(df, selected_user):
+#     if selected_user != 'Overall':
+#         df = df[df['user'] == selected_user]
+#
+#     heatmap = df.pivot_table(index='day_name', columns='hour_period', values='message', aggfunc='count').fillna(0)
+#
+#     return heatmap
+
+
+# better function - gets the sorted index and column heatmap
 def get_activity_heatmap(df, selected_user):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
 
-    return df.pivot_table(index='day_name', columns='hour', values='message', aggfunc='count').fillna(0)
+    # creating the sorted heatmap
+    # sorting days (index)
+    day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    df['day_name'] = pd.Categorical(df['day_name'], categories=day_order, ordered=True)
+
+    # Pivot table as before
+    heatmap = df.pivot_table(index='day_name', columns='hour_period', values='message', aggfunc='count').fillna(0)
+
+    # Sort hours (columns)
+    # Ensure 'hour_period' is in the correct order (0-1, 1-2, ..., 23-24)
+    hour_order = [f"{i}-{i+1}" for i in range(24)]
+    heatmap = heatmap[hour_order]    # column indexing in order
+
+    return heatmap

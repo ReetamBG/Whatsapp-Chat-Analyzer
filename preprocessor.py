@@ -24,6 +24,7 @@ def preprocess_data(data):
     # added later
     df['month_num'] = df['date'].dt.month
     df['day_name'] = df['date'].dt.day_name()
+    df['hour_period'] = df['hour'].astype(str) + '-' + (df['hour']+1).astype(str)
 
     # extracting user and message
     users = []
