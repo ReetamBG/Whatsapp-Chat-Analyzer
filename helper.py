@@ -178,6 +178,12 @@ def get_activity_heatmap(df, selected_user):
     # Sort hours (columns)
     # Ensure 'hour_period' is in the correct order (0-1, 1-2, ..., 23-24)
     hour_order = [f"{i}-{i+1}" for i in range(24)]
-    heatmap = heatmap[hour_order]    # column indexing in order
+
+    # Fill missing hour periods with zero values - certain chats have no messages on certain hours at all the days. So pivot table excludes those columns alltogether. It isn't even fixed in fillna(0) while creating the table as the column itself is not present as no text on that hour on any of the days
+    # reindex is a method used with pandas DataFrames and Series. It allows you to change the row/column labels or align your data to a new set of labels (index or columns). If you have missing rows or columns, reindex can fill them with a specified value (like NaN or 0).
+    heatmap = heatmap.reindex(columns=hour_order, fill_value=0)
+
+    # Reorder columns to match the desired hour order
+    heatmap = heatmap[hour_order]
 
     return heatmap
