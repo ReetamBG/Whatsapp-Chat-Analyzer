@@ -11,7 +11,7 @@ def preprocess_data(data):
     # extracting message and date
     date = re.findall(pattern, data)
     messages = re.split(pattern, data)[1:]
-    df = pd.DataFrame({'messages' : messages, 'date' : date})
+    df = pd.DataFrame({'messages': messages, 'date': date})
 
     # extracting date info
     df['date'] = pd.to_datetime(df['date'], format='%m/%d/%y, %I:%M %p - ')
