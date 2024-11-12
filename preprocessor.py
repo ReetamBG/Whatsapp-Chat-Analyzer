@@ -14,14 +14,24 @@ def preprocess_data(data):
     df = pd.DataFrame({'messages': messages, 'date': date})
 
     # check for all formats of dates
-    formats = ['%m/%d/%y, %I:%M %p - ',     # MM/DD/YY 12hrs
-               '%d/%m/%y, %I:%M %p - ',     # DD/MM/YY 12hrs
-               '%m/%d/%Y, %I:%M %p - ',     # MM/DD/YYYY 12hrs
-               '%d/%m/%Y, %I:%M %p - ',     # DD/MM/YYYY 12hrs
-               '%m/%d/%y, %H:%M - ',        # MM/DD/YY 24hrs
-               '%d/%m/%y, %H:%M - ',        # DD/MM/YY 24hrs
-               '%m/%d/%Y, %H:%M - ',        # MM/DD/YYYY 24hrs
-               '%d/%m/%Y, %H:%M - ']        # DD/MM/YYYY 24hrs
+    formats = [
+        # 12-hour formats
+        '%m/%d/%y, %I:%M %p - ',    # MM/DD/YY 12hrs
+        '%d/%m/%y, %I:%M %p - ',    # DD/MM/YY 12hrs
+        '%m/%d/%Y, %I:%M %p - ',    # MM/DD/YYYY 12hrs
+        '%d/%m/%Y, %I:%M %p - ',    # DD/MM/YYYY 12hrs
+
+        # 24-hour formats
+        '%m/%d/%y, %H:%M - ',       # MM/DD/YY 24hrs
+        '%d/%m/%y, %H:%M - ',       # DD/MM/YY 24hrs
+        '%m/%d/%Y, %H:%M - ',       # MM/DD/YYYY 24hrs
+        '%d/%m/%Y, %H:%M - ',       # DD/MM/YYYY 24hrs
+
+        # Additional Formats
+        '%Y/%m/%d, %I:%M %p - ',    # YYYY/MM/DD 12hrs
+        '%Y/%m/%d, %H:%M - ',       # YYYY/MM/DD 24hrs
+    ]
+
     temp = None
     for fmt in formats:
         temp = pd.to_datetime(df['date'], format=fmt, errors='coerce')
