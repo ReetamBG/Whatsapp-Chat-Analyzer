@@ -6,7 +6,7 @@ import re
 def preprocess_data(data):
 
     data = data.replace("\u202f", " ")
-    pattern = r'\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[AP]M\s-\s'
+    pattern = r'\d{1,2}/\d{1,2}/\d{2,4},\s(?:[01]?\d|2[0-3]):[0-5]\d(?:\s[APap][Mm])?\s-\s'    # checks for all cases AM/PM, am/pm and for 24hour formats as well
 
     # extracting message and date
     date = re.findall(pattern, data)
