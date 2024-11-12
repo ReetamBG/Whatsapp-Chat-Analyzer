@@ -13,8 +13,22 @@ def preprocess_data(data):
     messages = re.split(pattern, data)[1:]
     df = pd.DataFrame({'messages': messages, 'date': date})
 
-    # extracting date info
-    df['date'] = pd.to_datetime(df['date'], format='%m/%d/%y, %I:%M %p - ')
+    # check for all formats of dates
+    formats = ['%m/%d/%y, %I:%M %p - ',     # MM/DD/YY 12hrs
+               '%d/%m/%y, %I:%M %p - ',     # DD/MM/YY 12hrs
+               '%m/%d/%Y, %I:%M %p - ',     # MM/DD/YYYY 12hrs
+               '%d/%m/%Y, %I:%M %p - ',     # DD/MM/YYYY 12hrs
+               '%m/%d/%y, %H:%M - ',        # MM/DD/YY 24hrs
+               '%d/%m/%y, %H:%M - ',        # DD/MM/YY 24hrs
+               '%m/%d/%Y, %H:%M - ',        # MM/DD/YYYY 24hrs
+               '%d/%m/%Y, %H:%M - ']        # DD/MM/YYYY 24hrs
+    temp = None
+    for fmt in formats:
+        temp = pd.to_datetime(df['date'], format=fmt, errors='coerce')
+        if temp.notnull().all():  # Break if all dates are parsed successfully (i.e when no coerce happens i.e no null values)
+            break
+    df['date'] = temp
+
     df['year'] = df['date'].dt.year
     df['month'] = df['date'].dt.month_name()
     df['day'] = df['date'].dt.day
