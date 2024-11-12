@@ -46,6 +46,9 @@ def preprocess_messages(df):
     # removing media messages
     df = df[df['message'] != '<Media omitted>\n']
 
+    # removing deleted messasges
+    df = df[df['message'] == 'This message was deleted\n']
+
     # removing stopwords
     f = open('stopwords_hinglish.txt', 'r')
     stopwords = f.read()
