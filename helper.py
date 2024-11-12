@@ -30,6 +30,7 @@ def get_stats(df, selected_user):
 
     return num_messages, num_words, num_media_messages, num_links
 
+
 # Most Busy Users
 def get_most_busy_users(df):
     temp = df[df['user'] != 'Group Notification']    # excluding group notifs
@@ -46,8 +47,8 @@ def preprocess_messages(df):
     # removing media messages
     df = df[df['message'] != '<Media omitted>\n']
 
-    # removing deleted messasges
-    df = df[df['message'] == 'This message was deleted\n']
+    # removing deleted messages
+    df = df[df['message'] != 'This message was deleted\n']
 
     # removing stopwords
     f = open('stopwords_hinglish.txt', 'r')
